@@ -1,5 +1,9 @@
 import { relations, sql } from "drizzle-orm";
 import { index, integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { article, notification, order } from "./marketplace";
+
+export const userRoleEnum = ["user", "admin"] as const;
+export type UserRole = (typeof userRoleEnum)[number];
 
 export const user = sqliteTable("user", {
 	id: text("id").primaryKey(),
@@ -9,6 +13,7 @@ export const user = sqliteTable("user", {
 		.default(false)
 		.notNull(),
 	image: text("image"),
+	role: text("role", { enum: userRoleEnum }).default("user").notNull(),
 	createdAt: integer("created_at", { mode: "timestamp_ms" })
 		.default(sql`(cast(unixepoch('subsecond') * 1000 as integer))`)
 		.notNull(),
@@ -90,6 +95,10 @@ export const verification = sqliteTable(
 export const userRelations = relations(user, ({ many }) => ({
 	sessions: many(session),
 	accounts: many(account),
+	articles: many(article),
+	buyerOrders: many(order, { relationName: "buyerOrders" }),
+	sellerOrders: many(order, { relationName: "sellerOrders" }),
+	notifications: many(notification),
 }));
 
 export const sessionRelations = relations(session, ({ one }) => ({

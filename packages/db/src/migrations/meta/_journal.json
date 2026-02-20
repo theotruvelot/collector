@@ -1,13 +1,27 @@
 {
-	"version": "7",
-	"dialect": "sqlite",
-	"entries": [
-		{
-			"idx": 0,
-			"version": "6",
-			"when": 1771605326391,
-			"tag": "0000_mysterious_shard",
-			"breakpoints": true
-		}
-	]
+  "version": "7",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1771605326391,
+      "tag": "0000_mysterious_shard",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1771621141289,
+      "tag": "0001_equal_doomsday",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1771622776537,
+      "tag": "0002_lyrical_jubilee",
+      "breakpoints": true
+    }
+  ]
 }

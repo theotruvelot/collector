@@ -11,8 +11,21 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SuccessRouteImport } from './routes/success'
 import { Route as LoginRouteImport } from './routes/login'
-import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as CatalogRouteImport } from './routes/catalog'
+import { Route as DashboardRouteRouteImport } from './routes/dashboard/route'
+import { Route as AdminRouteRouteImport } from './routes/admin/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
+import { Route as AdminIndexRouteImport } from './routes/admin/index'
+import { Route as DashboardSalesRouteImport } from './routes/dashboard/sales'
+import { Route as DashboardPurchasesRouteImport } from './routes/dashboard/purchases'
+import { Route as DashboardNotificationsRouteImport } from './routes/dashboard/notifications'
+import { Route as DashboardArticlesRouteImport } from './routes/dashboard/articles'
+import { Route as ArticleSlugRouteImport } from './routes/article.$slug'
+import { Route as AdminModerationRouteImport } from './routes/admin/moderation'
+import { Route as AdminCategoriesRouteImport } from './routes/admin/categories'
+import { Route as DashboardArticlesNewRouteImport } from './routes/dashboard/articles_.new'
+import { Route as DashboardArticlesIdEditRouteImport } from './routes/dashboard/articles_.$id.edit'
 
 const SuccessRoute = SuccessRouteImport.update({
   id: '/success',
@@ -24,9 +37,19 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DashboardRoute = DashboardRouteImport.update({
+const CatalogRoute = CatalogRouteImport.update({
+  id: '/catalog',
+  path: '/catalog',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardRouteRoute = DashboardRouteRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRouteRoute = AdminRouteRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -34,39 +57,184 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DashboardIndexRoute = DashboardIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const DashboardSalesRoute = DashboardSalesRouteImport.update({
+  id: '/sales',
+  path: '/sales',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+const DashboardPurchasesRoute = DashboardPurchasesRouteImport.update({
+  id: '/purchases',
+  path: '/purchases',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+const DashboardNotificationsRoute = DashboardNotificationsRouteImport.update({
+  id: '/notifications',
+  path: '/notifications',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+const DashboardArticlesRoute = DashboardArticlesRouteImport.update({
+  id: '/articles',
+  path: '/articles',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+const ArticleSlugRoute = ArticleSlugRouteImport.update({
+  id: '/article/$slug',
+  path: '/article/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminModerationRoute = AdminModerationRouteImport.update({
+  id: '/moderation',
+  path: '/moderation',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminCategoriesRoute = AdminCategoriesRouteImport.update({
+  id: '/categories',
+  path: '/categories',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const DashboardArticlesNewRoute = DashboardArticlesNewRouteImport.update({
+  id: '/articles_/new',
+  path: '/articles/new',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+const DashboardArticlesIdEditRoute = DashboardArticlesIdEditRouteImport.update({
+  id: '/articles_/$id/edit',
+  path: '/articles/$id/edit',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/dashboard': typeof DashboardRoute
+  '/admin': typeof AdminRouteRouteWithChildren
+  '/dashboard': typeof DashboardRouteRouteWithChildren
+  '/catalog': typeof CatalogRoute
   '/login': typeof LoginRoute
   '/success': typeof SuccessRoute
+  '/admin/categories': typeof AdminCategoriesRoute
+  '/admin/moderation': typeof AdminModerationRoute
+  '/article/$slug': typeof ArticleSlugRoute
+  '/dashboard/articles': typeof DashboardArticlesRoute
+  '/dashboard/notifications': typeof DashboardNotificationsRoute
+  '/dashboard/purchases': typeof DashboardPurchasesRoute
+  '/dashboard/sales': typeof DashboardSalesRoute
+  '/admin/': typeof AdminIndexRoute
+  '/dashboard/': typeof DashboardIndexRoute
+  '/dashboard/articles/new': typeof DashboardArticlesNewRoute
+  '/dashboard/articles/$id/edit': typeof DashboardArticlesIdEditRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/dashboard': typeof DashboardRoute
+  '/catalog': typeof CatalogRoute
   '/login': typeof LoginRoute
   '/success': typeof SuccessRoute
+  '/admin/categories': typeof AdminCategoriesRoute
+  '/admin/moderation': typeof AdminModerationRoute
+  '/article/$slug': typeof ArticleSlugRoute
+  '/dashboard/articles': typeof DashboardArticlesRoute
+  '/dashboard/notifications': typeof DashboardNotificationsRoute
+  '/dashboard/purchases': typeof DashboardPurchasesRoute
+  '/dashboard/sales': typeof DashboardSalesRoute
+  '/admin': typeof AdminIndexRoute
+  '/dashboard': typeof DashboardIndexRoute
+  '/dashboard/articles/new': typeof DashboardArticlesNewRoute
+  '/dashboard/articles/$id/edit': typeof DashboardArticlesIdEditRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/dashboard': typeof DashboardRoute
+  '/admin': typeof AdminRouteRouteWithChildren
+  '/dashboard': typeof DashboardRouteRouteWithChildren
+  '/catalog': typeof CatalogRoute
   '/login': typeof LoginRoute
   '/success': typeof SuccessRoute
+  '/admin/categories': typeof AdminCategoriesRoute
+  '/admin/moderation': typeof AdminModerationRoute
+  '/article/$slug': typeof ArticleSlugRoute
+  '/dashboard/articles': typeof DashboardArticlesRoute
+  '/dashboard/notifications': typeof DashboardNotificationsRoute
+  '/dashboard/purchases': typeof DashboardPurchasesRoute
+  '/dashboard/sales': typeof DashboardSalesRoute
+  '/admin/': typeof AdminIndexRoute
+  '/dashboard/': typeof DashboardIndexRoute
+  '/dashboard/articles_/new': typeof DashboardArticlesNewRoute
+  '/dashboard/articles_/$id/edit': typeof DashboardArticlesIdEditRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/dashboard' | '/login' | '/success'
+  fullPaths:
+    | '/'
+    | '/admin'
+    | '/dashboard'
+    | '/catalog'
+    | '/login'
+    | '/success'
+    | '/admin/categories'
+    | '/admin/moderation'
+    | '/article/$slug'
+    | '/dashboard/articles'
+    | '/dashboard/notifications'
+    | '/dashboard/purchases'
+    | '/dashboard/sales'
+    | '/admin/'
+    | '/dashboard/'
+    | '/dashboard/articles/new'
+    | '/dashboard/articles/$id/edit'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/dashboard' | '/login' | '/success'
-  id: '__root__' | '/' | '/dashboard' | '/login' | '/success'
+  to:
+    | '/'
+    | '/catalog'
+    | '/login'
+    | '/success'
+    | '/admin/categories'
+    | '/admin/moderation'
+    | '/article/$slug'
+    | '/dashboard/articles'
+    | '/dashboard/notifications'
+    | '/dashboard/purchases'
+    | '/dashboard/sales'
+    | '/admin'
+    | '/dashboard'
+    | '/dashboard/articles/new'
+    | '/dashboard/articles/$id/edit'
+  id:
+    | '__root__'
+    | '/'
+    | '/admin'
+    | '/dashboard'
+    | '/catalog'
+    | '/login'
+    | '/success'
+    | '/admin/categories'
+    | '/admin/moderation'
+    | '/article/$slug'
+    | '/dashboard/articles'
+    | '/dashboard/notifications'
+    | '/dashboard/purchases'
+    | '/dashboard/sales'
+    | '/admin/'
+    | '/dashboard/'
+    | '/dashboard/articles_/new'
+    | '/dashboard/articles_/$id/edit'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  DashboardRoute: typeof DashboardRoute
+  AdminRouteRoute: typeof AdminRouteRouteWithChildren
+  DashboardRouteRoute: typeof DashboardRouteRouteWithChildren
+  CatalogRoute: typeof CatalogRoute
   LoginRoute: typeof LoginRoute
   SuccessRoute: typeof SuccessRoute
+  ArticleSlugRoute: typeof ArticleSlugRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -85,11 +253,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/catalog': {
+      id: '/catalog'
+      path: '/catalog'
+      fullPath: '/catalog'
+      preLoaderRoute: typeof CatalogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/dashboard': {
       id: '/dashboard'
       path: '/dashboard'
       fullPath: '/dashboard'
-      preLoaderRoute: typeof DashboardRouteImport
+      preLoaderRoute: typeof DashboardRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -99,14 +281,134 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dashboard/': {
+      id: '/dashboard/'
+      path: '/'
+      fullPath: '/dashboard/'
+      preLoaderRoute: typeof DashboardIndexRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/dashboard/sales': {
+      id: '/dashboard/sales'
+      path: '/sales'
+      fullPath: '/dashboard/sales'
+      preLoaderRoute: typeof DashboardSalesRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/purchases': {
+      id: '/dashboard/purchases'
+      path: '/purchases'
+      fullPath: '/dashboard/purchases'
+      preLoaderRoute: typeof DashboardPurchasesRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/notifications': {
+      id: '/dashboard/notifications'
+      path: '/notifications'
+      fullPath: '/dashboard/notifications'
+      preLoaderRoute: typeof DashboardNotificationsRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/articles': {
+      id: '/dashboard/articles'
+      path: '/articles'
+      fullPath: '/dashboard/articles'
+      preLoaderRoute: typeof DashboardArticlesRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/article/$slug': {
+      id: '/article/$slug'
+      path: '/article/$slug'
+      fullPath: '/article/$slug'
+      preLoaderRoute: typeof ArticleSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/moderation': {
+      id: '/admin/moderation'
+      path: '/moderation'
+      fullPath: '/admin/moderation'
+      preLoaderRoute: typeof AdminModerationRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/categories': {
+      id: '/admin/categories'
+      path: '/categories'
+      fullPath: '/admin/categories'
+      preLoaderRoute: typeof AdminCategoriesRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/dashboard/articles_/new': {
+      id: '/dashboard/articles_/new'
+      path: '/articles/new'
+      fullPath: '/dashboard/articles/new'
+      preLoaderRoute: typeof DashboardArticlesNewRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/articles_/$id/edit': {
+      id: '/dashboard/articles_/$id/edit'
+      path: '/articles/$id/edit'
+      fullPath: '/dashboard/articles/$id/edit'
+      preLoaderRoute: typeof DashboardArticlesIdEditRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
   }
 }
 
+interface AdminRouteRouteChildren {
+  AdminCategoriesRoute: typeof AdminCategoriesRoute
+  AdminModerationRoute: typeof AdminModerationRoute
+  AdminIndexRoute: typeof AdminIndexRoute
+}
+
+const AdminRouteRouteChildren: AdminRouteRouteChildren = {
+  AdminCategoriesRoute: AdminCategoriesRoute,
+  AdminModerationRoute: AdminModerationRoute,
+  AdminIndexRoute: AdminIndexRoute,
+}
+
+const AdminRouteRouteWithChildren = AdminRouteRoute._addFileChildren(
+  AdminRouteRouteChildren,
+)
+
+interface DashboardRouteRouteChildren {
+  DashboardArticlesRoute: typeof DashboardArticlesRoute
+  DashboardNotificationsRoute: typeof DashboardNotificationsRoute
+  DashboardPurchasesRoute: typeof DashboardPurchasesRoute
+  DashboardSalesRoute: typeof DashboardSalesRoute
+  DashboardIndexRoute: typeof DashboardIndexRoute
+  DashboardArticlesNewRoute: typeof DashboardArticlesNewRoute
+  DashboardArticlesIdEditRoute: typeof DashboardArticlesIdEditRoute
+}
+
+const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
+  DashboardArticlesRoute: DashboardArticlesRoute,
+  DashboardNotificationsRoute: DashboardNotificationsRoute,
+  DashboardPurchasesRoute: DashboardPurchasesRoute,
+  DashboardSalesRoute: DashboardSalesRoute,
+  DashboardIndexRoute: DashboardIndexRoute,
+  DashboardArticlesNewRoute: DashboardArticlesNewRoute,
+  DashboardArticlesIdEditRoute: DashboardArticlesIdEditRoute,
+}
+
+const DashboardRouteRouteWithChildren = DashboardRouteRoute._addFileChildren(
+  DashboardRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  DashboardRoute: DashboardRoute,
+  AdminRouteRoute: AdminRouteRouteWithChildren,
+  DashboardRouteRoute: DashboardRouteRouteWithChildren,
+  CatalogRoute: CatalogRoute,
   LoginRoute: LoginRoute,
   SuccessRoute: SuccessRoute,
+  ArticleSlugRoute: ArticleSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
