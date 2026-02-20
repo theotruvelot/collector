@@ -41,10 +41,7 @@ jobs:
         run: bun install
 
       - name: Start Server in Background
-        run: bun run dev &
-
-      - name: Wait for Server
-        run: bunx wait-on http://localhost:3000
+        run: bun run dev & bunx wait-on http://localhost:3000
 
       - name: Run k6 Load Test
         uses: grafana/k6-action@v0.3.1
