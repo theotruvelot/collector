@@ -15,6 +15,7 @@ const app = await alchemy("collector", {
 
 const db = await D1Database("database", {
 	migrationsDir: "../../packages/db/src/migrations",
+	adopt: true,
 });
 
 export const web = await Vite("web", {
