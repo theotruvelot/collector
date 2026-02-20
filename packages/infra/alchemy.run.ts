@@ -21,6 +21,7 @@ const db = await D1Database("database", {
 export const web = await Vite("web", {
 	cwd: "../../apps/web",
 	assets: "dist",
+	adopt: true,
 	bindings: {
 		VITE_SERVER_URL: alchemy.env.VITE_SERVER_URL!,
 	},
@@ -30,6 +31,7 @@ export const server = await Worker("server", {
 	cwd: "../../apps/server",
 	entrypoint: "src/index.ts",
 	compatibility: "node",
+	adopt: true,
 	bindings: {
 		DB: db,
 		CORS_ORIGIN: alchemy.env.CORS_ORIGIN!,
