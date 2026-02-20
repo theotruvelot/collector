@@ -29,8 +29,9 @@
     "dev:server": "turbo -F server dev",
     "db:push": "turbo -F @collector/db db:push",
     "db:generate": "turbo -F @collector/db db:generate",
-    "deploy": "turbo -F @collector/infra deploy",
-    "destroy": "turbo -F @collector/infra destroy",
+    "deploy": "turbo -F @collector/infra deploy --",
+    "destroy": "turbo -F @collector/infra destroy --",
+    "test:load": "k6 run tests/load.js",
     "check": "biome check --write .",
     "test": "turbo test"
   },

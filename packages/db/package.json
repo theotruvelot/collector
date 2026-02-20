@@ -1,29 +1,29 @@
 {
-  "name": "@collector/db",
-  "type": "module",
-  "exports": {
-    ".": {
-      "default": "./src/index.ts"
-    },
-    "./*": {
-      "default": "./src/*.ts"
-    }
-  },
-  "scripts": {
-    "db:push": "drizzle-kit push",
-    "db:generate": "drizzle-kit generate"
-  },
-  "dependencies": {
-    "@collector/env": "workspace:*",
-    "@libsql/client": "catalog:",
-    "dotenv": "catalog:",
-    "drizzle-orm": "^0.45.1",
-    "libsql": "catalog:",
-    "zod": "catalog:"
-  },
-  "devDependencies": {
-    "@collector/config": "workspace:*",
-    "drizzle-kit": "^0.31.8",
-    "typescript": "catalog:"
-  }
+	"name": "@collector/db",
+	"type": "module",
+	"exports": {
+		".": {
+			"default": "./src/index.ts"
+		},
+		"./*": {
+			"default": "./src/*.ts"
+		}
+	},
+	"scripts": {
+		"db:push": "drizzle-kit push",
+		"db:generate": "drizzle-kit generate"
+	},
+	"dependencies": {
+		"@collector/env": "workspace:*",
+		"@libsql/client": "catalog:",
+		"dotenv": "catalog:",
+		"drizzle-orm": "^0.45.1",
+		"libsql": "catalog:",
+		"zod": "catalog:"
+	},
+	"devDependencies": {
+		"@collector/config": "workspace:*",
+		"drizzle-kit": "^0.31.8",
+		"typescript": "catalog:"
+	}
 }

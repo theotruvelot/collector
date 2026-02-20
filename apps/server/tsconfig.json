@@ -3,7 +3,8 @@
   "compilerOptions": {
     "composite": true,
     "types": [
-      "bun"
+      "bun",
+      "@cloudflare/workers-types"
     ],
     "outDir": "dist",
     "baseUrl": ".",

@@ -1,5 +1,5 @@
 {
-  "name": "@collector/config",
-  "version": "0.0.0",
-  "private": true
+	"name": "@collector/config",
+	"version": "0.0.0",
+	"private": true
 }
