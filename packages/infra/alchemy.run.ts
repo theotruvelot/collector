@@ -8,6 +8,7 @@ config({ path: "../../apps/web/.env" });
 config({ path: "../../apps/server/.env" });
 
 const app = await alchemy("collector", {
+	password: process.env.ALCHEMY_PASSWORD,
 	stateStore: process.env.CI
 		? (scope) => new CloudflareStateStore(scope)
 		: undefined,

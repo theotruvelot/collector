@@ -55,8 +55,10 @@ jobs:
           BETTER_AUTH_URL: ${{ vars.BETTER_AUTH_URL }}
           POLAR_ACCESS_TOKEN: ${{ secrets.POLAR_ACCESS_TOKEN }}
           POLAR_SUCCESS_URL: ${{ vars.POLAR_SUCCESS_URL }}
+          ALCHEMY_PASSWORD: ${{ secrets.ALCHEMY_PASSWORD }}
 
   deploy-production:
+
     name: Deploy to Production
     runs-on: ubuntu-latest
     needs: [test]
@@ -85,3 +87,4 @@ jobs:
           BETTER_AUTH_URL: ${{ vars.BETTER_AUTH_URL }}
           POLAR_ACCESS_TOKEN: ${{ secrets.POLAR_ACCESS_TOKEN }}
           POLAR_SUCCESS_URL: ${{ vars.POLAR_SUCCESS_URL }}
+          ALCHEMY_PASSWORD: ${{ secrets.ALCHEMY_PASSWORD }}
