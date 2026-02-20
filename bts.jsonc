@@ -1,0 +1,31 @@
+// Better-T-Stack
+//
+// Website: https://www.better-t-stack.dev/
+// Stack Builder: https://www.better-t-stack.dev/new
+// Analytics: https://www.better-t-stack.dev/analytics
+// Showcase: https://www.better-t-stack.dev/showcase
+// Sponsor: https://github.com/sponsors/AmanVarshney01
+//
+// Add new addons with: bun create better-t-stack add
+// This file is safe to delete
+
+{
+  "$schema": "https://r2.better-t-stack.dev/schema.json",
+  "version": "3.21.1",
+  "createdAt": "2026-02-20T16:29:50.731Z",
+  "reproducibleCommand": "bun create better-t-stack@latest collector --frontend tanstack-router --backend hono --runtime workers --database sqlite --orm drizzle --api none --auth better-auth --payments polar --addons biome turborepo --examples none --db-setup d1 --web-deploy cloudflare --server-deploy cloudflare --git --package-manager bun --install",
+  "database": "sqlite",
+  "orm": "drizzle",
+  "backend": "hono",
+  "runtime": "workers",
+  "frontend": ["tanstack-router"],
+  "addons": ["biome", "turborepo"],
+  "examples": [],
+  "auth": "better-auth",
+  "payments": "polar",
+  "packageManager": "bun",
+  "dbSetup": "d1",
+  "api": "none",
+  "webDeploy": "cloudflare",
+  "serverDeploy": "cloudflare",
+}
