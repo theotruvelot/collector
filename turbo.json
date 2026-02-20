@@ -40,10 +40,20 @@
 			"cache": false
 		},
 		"deploy": {
-			"cache": false
+			"cache": false,
+			"passThroughEnv": [
+				"CLOUDFLARE_API_TOKEN",
+				"CLOUDFLARE_ACCOUNT_ID",
+				"ALCHEMY_STATE_TOKEN"
+			]
 		},
 		"destroy": {
-			"cache": false
+			"cache": false,
+			"passThroughEnv": [
+				"CLOUDFLARE_API_TOKEN",
+				"CLOUDFLARE_ACCOUNT_ID",
+				"ALCHEMY_STATE_TOKEN"
+			]
 		}
 	}
 }
