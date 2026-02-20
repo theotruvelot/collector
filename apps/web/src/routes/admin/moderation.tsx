@@ -53,7 +53,7 @@ function ModerationPage() {
 
 	return (
 		<div>
-			<h2 className="mb-4 text-lg font-semibold">
+			<h2 className="mb-4 font-semibold text-lg">
 				Pending Moderation ({articles.length})
 			</h2>
 
@@ -68,39 +68,28 @@ function ModerationPage() {
 					{articles.map((article) => (
 						<Card key={article.id}>
 							<CardHeader>
-								<CardTitle className="text-sm">
-									{article.title}
-								</CardTitle>
+								<CardTitle className="text-sm">{article.title}</CardTitle>
 							</CardHeader>
 							<CardContent>
-								<p className="text-xs line-clamp-3">
-									{article.description}
-								</p>
-								<p className="mt-2 text-sm font-bold">
+								<p className="line-clamp-3 text-xs">{article.description}</p>
+								<p className="mt-2 font-bold text-sm">
 									{article.price.toFixed(2)} €
 								</p>
 								<p className="text-muted-foreground text-xs">
-									Submitted:{" "}
-									{new Date(
-										article.createdAt,
-									).toLocaleDateString()}
+									Submitted: {new Date(article.createdAt).toLocaleDateString()}
 								</p>
 							</CardContent>
 							<CardFooter className="gap-2">
 								<Button
 									size="sm"
-									onClick={() =>
-										moderate(article.id, "approved")
-									}
+									onClick={() => moderate(article.id, "approved")}
 								>
 									Approve
 								</Button>
 								<Button
 									variant="destructive"
 									size="sm"
-									onClick={() =>
-										moderate(article.id, "rejected")
-									}
+									onClick={() => moderate(article.id, "rejected")}
 								>
 									Reject
 								</Button>

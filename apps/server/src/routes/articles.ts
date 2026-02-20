@@ -1,4 +1,5 @@
 import { db } from "@collector/db";
+import { user } from "@collector/db/schema/auth";
 import {
 	article,
 	articleImage,
@@ -6,7 +7,6 @@ import {
 	notification,
 	priceHistory,
 } from "@collector/db/schema/marketplace";
-import { user } from "@collector/db/schema/auth";
 import { and, desc, eq, like, sql } from "drizzle-orm";
 import { Hono } from "hono";
 import { z } from "zod";
@@ -238,10 +238,7 @@ const app = new Hono()
 			.get();
 
 		if (images) {
-			await db
-				.delete(articleImage)
-				.where(eq(articleImage.articleId, id))
-				.run();
+			await db.delete(articleImage).where(eq(articleImage.articleId, id)).run();
 			await db.insert(articleImage).values(
 				images.map((url, i) => ({
 					articleId: id,

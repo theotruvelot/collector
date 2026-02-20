@@ -1,5 +1,11 @@
 import { relations, sql } from "drizzle-orm";
-import { index, integer, real, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import {
+	index,
+	integer,
+	real,
+	sqliteTable,
+	text,
+} from "drizzle-orm/sqlite-core";
 import { user } from "./auth";
 
 export const articleStatusEnum = [
@@ -31,7 +37,9 @@ export type NotificationType = (typeof notificationTypeEnum)[number];
 // --- Categories ---
 
 export const category = sqliteTable("category", {
-	id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
+	id: text("id")
+		.primaryKey()
+		.$defaultFn(() => crypto.randomUUID()),
 	name: text("name").notNull(),
 	slug: text("slug").notNull().unique(),
 	description: text("description"),
@@ -49,7 +57,9 @@ export const category = sqliteTable("category", {
 export const article = sqliteTable(
 	"article",
 	{
-		id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
+		id: text("id")
+			.primaryKey()
+			.$defaultFn(() => crypto.randomUUID()),
 		title: text("title").notNull(),
 		slug: text("slug").notNull().unique(),
 		description: text("description").notNull(),
@@ -84,7 +94,9 @@ export const article = sqliteTable(
 export const articleImage = sqliteTable(
 	"article_image",
 	{
-		id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
+		id: text("id")
+			.primaryKey()
+			.$defaultFn(() => crypto.randomUUID()),
 		articleId: text("article_id")
 			.notNull()
 			.references(() => article.id, { onDelete: "cascade" }),
@@ -99,7 +111,9 @@ export const articleImage = sqliteTable(
 export const priceHistory = sqliteTable(
 	"price_history",
 	{
-		id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
+		id: text("id")
+			.primaryKey()
+			.$defaultFn(() => crypto.randomUUID()),
 		articleId: text("article_id")
 			.notNull()
 			.references(() => article.id, { onDelete: "cascade" }),
@@ -117,7 +131,9 @@ export const priceHistory = sqliteTable(
 export const order = sqliteTable(
 	"order",
 	{
-		id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
+		id: text("id")
+			.primaryKey()
+			.$defaultFn(() => crypto.randomUUID()),
 		articleId: text("article_id")
 			.notNull()
 			.references(() => article.id, { onDelete: "restrict" }),
@@ -152,7 +168,9 @@ export const order = sqliteTable(
 export const notification = sqliteTable(
 	"notification",
 	{
-		id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
+		id: text("id")
+			.primaryKey()
+			.$defaultFn(() => crypto.randomUUID()),
 		userId: text("user_id")
 			.notNull()
 			.references(() => user.id, { onDelete: "cascade" }),

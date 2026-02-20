@@ -59,7 +59,7 @@ function SalesPage() {
 
 	return (
 		<div>
-			<h2 className="mb-4 text-lg font-semibold">My Sales</h2>
+			<h2 className="mb-4 font-semibold text-lg">My Sales</h2>
 
 			{loading ? (
 				<p className="text-muted-foreground text-sm">Loading...</p>
@@ -90,10 +90,7 @@ function SalesPage() {
 							</CardContent>
 							{order.status === "paid" && (
 								<CardFooter>
-									<Button
-										size="sm"
-										onClick={() => markShipped(order.id)}
-									>
+									<Button size="sm" onClick={() => markShipped(order.id)}>
 										Mark as Shipped
 									</Button>
 								</CardFooter>

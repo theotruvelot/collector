@@ -132,9 +132,7 @@ function ArticleDetailComponent() {
 						</>
 					) : (
 						<div className="flex aspect-square items-center justify-center bg-muted">
-							<span className="text-muted-foreground">
-								No image
-							</span>
+							<span className="text-muted-foreground">No image</span>
 						</div>
 					)}
 				</div>
@@ -142,9 +140,7 @@ function ArticleDetailComponent() {
 				<div>
 					<Card>
 						<CardHeader>
-							<CardTitle className="text-xl">
-								{article.title}
-							</CardTitle>
+							<CardTitle className="text-xl">{article.title}</CardTitle>
 							{article.category && (
 								<Link
 									to="/catalog"
@@ -165,17 +161,13 @@ function ArticleDetailComponent() {
 
 							<div className="mt-4 space-y-1">
 								<div className="flex justify-between">
-									<span className="text-muted-foreground">
-										Price
-									</span>
+									<span className="text-muted-foreground">Price</span>
 									<span className="font-bold">
 										{article.price.toFixed(2)} €
 									</span>
 								</div>
 								<div className="flex justify-between">
-									<span className="text-muted-foreground">
-										Shipping
-									</span>
+									<span className="text-muted-foreground">Shipping</span>
 									<span>
 										{article.shippingCost > 0
 											? `${article.shippingCost.toFixed(2)} €`

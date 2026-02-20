@@ -30,9 +30,7 @@ const app = new Hono()
 		const updated = await db
 			.update(notification)
 			.set({ read: true })
-			.where(
-				and(eq(notification.id, id), eq(notification.userId, userId)),
-			)
+			.where(and(eq(notification.id, id), eq(notification.userId, userId)))
 			.returning()
 			.get();
 
@@ -48,12 +46,7 @@ const app = new Hono()
 		await db
 			.update(notification)
 			.set({ read: true })
-			.where(
-				and(
-					eq(notification.userId, userId),
-					eq(notification.read, false),
-				),
-			)
+			.where(and(eq(notification.userId, userId), eq(notification.read, false)))
 			.run();
 
 		return c.json({ success: true });

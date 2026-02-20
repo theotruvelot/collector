@@ -3,12 +3,7 @@ import { useEffect, useState } from "react";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
-import {
-	Card,
-	CardFooter,
-	CardHeader,
-	CardTitle,
-} from "@/components/ui/card";
+import { Card, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { api } from "@/lib/api";
 
@@ -79,13 +74,10 @@ function CatalogComponent() {
 
 	return (
 		<div className="container mx-auto max-w-6xl px-4 py-6">
-			<h1 className="mb-4 text-2xl font-bold">Catalog</h1>
+			<h1 className="mb-4 font-bold text-2xl">Catalog</h1>
 
 			<div className="mb-6 flex flex-col gap-4 sm:flex-row">
-				<form
-					onSubmit={handleSearch}
-					className="flex flex-1 gap-2"
-				>
+				<form onSubmit={handleSearch} className="flex flex-1 gap-2">
 					<Input
 						placeholder="Search articles..."
 						value={searchInput}
@@ -101,25 +93,14 @@ function CatalogComponent() {
 
 				<div className="flex flex-wrap gap-2">
 					<Link to="/catalog" search={{}}>
-						<Button
-							variant={!categorySlug ? "default" : "outline"}
-							size="sm"
-						>
+						<Button variant={!categorySlug ? "default" : "outline"} size="sm">
 							All
 						</Button>
 					</Link>
 					{categories.map((cat) => (
-						<Link
-							key={cat.id}
-							to="/catalog"
-							search={{ category: cat.slug }}
-						>
+						<Link key={cat.id} to="/catalog" search={{ category: cat.slug }}>
 							<Button
-								variant={
-									categorySlug === cat.slug
-										? "default"
-										: "outline"
-								}
+								variant={categorySlug === cat.slug ? "default" : "outline"}
 								size="sm"
 							>
 								{cat.name}
@@ -132,9 +113,7 @@ function CatalogComponent() {
 			{loading ? (
 				<p className="text-muted-foreground text-sm">Loading...</p>
 			) : articles.length === 0 ? (
-				<p className="text-muted-foreground text-sm">
-					No articles found.
-				</p>
+				<p className="text-muted-foreground text-sm">No articles found.</p>
 			) : (
 				<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
 					{articles.map((article) => (
@@ -143,7 +122,7 @@ function CatalogComponent() {
 							to="/article/$slug"
 							params={{ slug: article.slug }}
 						>
-							<Card className="hover:ring-foreground/20 transition-all">
+							<Card className="transition-all hover:ring-foreground/20">
 								{article.images[0] && (
 									<img
 										src={article.images[0].url}

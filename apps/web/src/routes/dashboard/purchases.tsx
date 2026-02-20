@@ -59,14 +59,12 @@ function PurchasesPage() {
 
 	return (
 		<div>
-			<h2 className="mb-4 text-lg font-semibold">My Purchases</h2>
+			<h2 className="mb-4 font-semibold text-lg">My Purchases</h2>
 
 			{loading ? (
 				<p className="text-muted-foreground text-sm">Loading...</p>
 			) : orders.length === 0 ? (
-				<p className="text-muted-foreground text-sm">
-					No purchases yet.
-				</p>
+				<p className="text-muted-foreground text-sm">No purchases yet.</p>
 			) : (
 				<div className="space-y-3">
 					{orders.map((order) => (
@@ -82,21 +80,14 @@ function PurchasesPage() {
 								</CardTitle>
 							</CardHeader>
 							<CardContent>
-								<p className="text-sm">
-									Total: {order.amount.toFixed(2)} €
-								</p>
+								<p className="text-sm">Total: {order.amount.toFixed(2)} €</p>
 								<p className="text-muted-foreground text-xs">
 									{new Date(order.createdAt).toLocaleDateString()}
 								</p>
 							</CardContent>
 							{order.status === "shipped" && (
 								<CardFooter>
-									<Button
-										size="sm"
-										onClick={() =>
-											confirmDelivery(order.id)
-										}
-									>
+									<Button size="sm" onClick={() => confirmDelivery(order.id)}>
 										Confirm Delivery
 									</Button>
 								</CardFooter>

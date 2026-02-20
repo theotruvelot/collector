@@ -2,10 +2,7 @@ import { env } from "@collector/env/web";
 
 const BASE_URL = env.VITE_SERVER_URL;
 
-async function request<T>(
-	path: string,
-	options?: RequestInit,
-): Promise<T> {
+async function request<T>(path: string, options?: RequestInit): Promise<T> {
 	const res = await fetch(`${BASE_URL}${path}`, {
 		...options,
 		credentials: "include",

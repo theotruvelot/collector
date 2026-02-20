@@ -41,7 +41,7 @@ function EditArticle() {
 		shippingCost: "0",
 		categoryId: "",
 		images: [""],
-	})
+	});
 
 	useEffect(() => {
 		Promise.all([
@@ -60,10 +60,10 @@ function EditArticle() {
 					images: article.images.length
 						? article.images.map((img) => img.url)
 						: [""],
-				})
+				});
 			}
 			setLoading(false);
-		})
+		});
 	}, [id]);
 
 	const handleSubmit = async (e: React.FormEvent) => {
@@ -77,7 +77,7 @@ function EditArticle() {
 				shippingCost: Number.parseFloat(form.shippingCost),
 				categoryId: form.categoryId,
 				images: form.images.filter((url) => url.trim()),
-			})
+			});
 			toast.success("Article updated!");
 			navigate({ to: "/dashboard/articles" });
 		} catch (e: any) {
@@ -85,7 +85,7 @@ function EditArticle() {
 		} finally {
 			setSubmitting(false);
 		}
-	}
+	};
 
 	if (loading) {
 		return <p className="text-muted-foreground text-sm">Loading...</p>;
@@ -93,7 +93,7 @@ function EditArticle() {
 
 	return (
 		<div className="max-w-2xl">
-			<h2 className="mb-4 text-lg font-semibold">Edit Article</h2>
+			<h2 className="mb-4 font-semibold text-lg">Edit Article</h2>
 
 			<form onSubmit={handleSubmit} className="space-y-4">
 				<div>
@@ -157,8 +157,7 @@ function EditArticle() {
 							onChange={(e) =>
 								setForm((f) => ({
 									...f,
-									shippingCost: (e.target as HTMLInputElement)
-										.value,
+									shippingCost: (e.target as HTMLInputElement).value,
 								}))
 							}
 						/>
@@ -200,10 +199,7 @@ function EditArticle() {
 								setForm((f) => ({
 									...f,
 									images: f.images.map((img, j) =>
-										j === i
-											? (e.target as HTMLInputElement)
-													.value
-											: img,
+										j === i ? (e.target as HTMLInputElement).value : img,
 									),
 								}))
 							}
@@ -229,5 +225,5 @@ function EditArticle() {
 				</Button>
 			</form>
 		</div>
-	)
+	);
 }

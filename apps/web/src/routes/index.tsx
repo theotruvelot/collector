@@ -52,7 +52,7 @@ function HomeComponent() {
 	return (
 		<div className="container mx-auto max-w-6xl px-4 py-6">
 			<section className="mb-8">
-				<h1 className="mb-2 text-2xl font-bold">Collector.shop</h1>
+				<h1 className="mb-2 font-bold text-2xl">Collector.shop</h1>
 				<p className="text-muted-foreground">
 					Marketplace d'objets de collection entre particuliers
 				</p>
@@ -60,22 +60,16 @@ function HomeComponent() {
 
 			<section className="mb-8">
 				<div className="mb-4 flex items-center justify-between">
-					<h2 className="text-lg font-semibold">Categories</h2>
+					<h2 className="font-semibold text-lg">Categories</h2>
 				</div>
 				{loading ? (
 					<p className="text-muted-foreground text-sm">Loading...</p>
 				) : categories.length === 0 ? (
-					<p className="text-muted-foreground text-sm">
-						No categories yet.
-					</p>
+					<p className="text-muted-foreground text-sm">No categories yet.</p>
 				) : (
 					<div className="flex flex-wrap gap-2">
 						{categories.map((cat) => (
-							<Link
-								key={cat.id}
-								to="/catalog"
-								search={{ category: cat.slug }}
-							>
+							<Link key={cat.id} to="/catalog" search={{ category: cat.slug }}>
 								<Button variant="outline" size="sm">
 									{cat.name}
 								</Button>
@@ -87,7 +81,7 @@ function HomeComponent() {
 
 			<section>
 				<div className="mb-4 flex items-center justify-between">
-					<h2 className="text-lg font-semibold">Recent Articles</h2>
+					<h2 className="font-semibold text-lg">Recent Articles</h2>
 					<Link to="/catalog">
 						<Button variant="ghost" size="sm">
 							View all
@@ -108,7 +102,7 @@ function HomeComponent() {
 								to="/article/$slug"
 								params={{ slug: article.slug }}
 							>
-								<Card className="hover:ring-foreground/20 transition-all">
+								<Card className="transition-all hover:ring-foreground/20">
 									{article.images[0] && (
 										<img
 											src={article.images[0].url}

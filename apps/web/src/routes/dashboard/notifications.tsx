@@ -47,10 +47,10 @@ function NotificationsPage() {
 	return (
 		<div>
 			<div className="mb-4 flex items-center justify-between">
-				<h2 className="text-lg font-semibold">
+				<h2 className="font-semibold text-lg">
 					Notifications{" "}
 					{unreadCount > 0 && (
-						<span className="text-muted-foreground text-sm font-normal">
+						<span className="font-normal text-muted-foreground text-sm">
 							({unreadCount} unread)
 						</span>
 					)}
@@ -65,26 +65,19 @@ function NotificationsPage() {
 			{loading ? (
 				<p className="text-muted-foreground text-sm">Loading...</p>
 			) : notifications.length === 0 ? (
-				<p className="text-muted-foreground text-sm">
-					No notifications yet.
-				</p>
+				<p className="text-muted-foreground text-sm">No notifications yet.</p>
 			) : (
 				<div className="space-y-2">
 					{notifications.map((notif) => (
-						<Card
-							key={notif.id}
-							className={notif.read ? "opacity-60" : ""}
-						>
+						<Card key={notif.id} className={notif.read ? "opacity-60" : ""}>
 							<CardHeader>
 								<CardTitle className="flex items-center gap-2 text-sm">
 									{!notif.read && (
 										<span className="h-2 w-2 rounded-full bg-primary" />
 									)}
 									{notif.title}
-									<span className="ml-auto text-muted-foreground text-xs font-normal">
-										{new Date(
-											notif.createdAt,
-										).toLocaleDateString()}
+									<span className="ml-auto font-normal text-muted-foreground text-xs">
+										{new Date(notif.createdAt).toLocaleDateString()}
 									</span>
 								</CardTitle>
 							</CardHeader>

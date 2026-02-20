@@ -1,12 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 
-import {
-	Card,
-	CardContent,
-	CardHeader,
-	CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { api } from "@/lib/api";
 
 type Stats = {
@@ -47,7 +42,7 @@ function DashboardOverview() {
 					<CardTitle>My Articles</CardTitle>
 				</CardHeader>
 				<CardContent>
-					<p className="text-2xl font-bold">{stats.articlesCount}</p>
+					<p className="font-bold text-2xl">{stats.articlesCount}</p>
 				</CardContent>
 			</Card>
 			<Card>
@@ -55,7 +50,7 @@ function DashboardOverview() {
 					<CardTitle>Sales</CardTitle>
 				</CardHeader>
 				<CardContent>
-					<p className="text-2xl font-bold">{stats.salesCount}</p>
+					<p className="font-bold text-2xl">{stats.salesCount}</p>
 				</CardContent>
 			</Card>
 			<Card>
@@ -63,7 +58,7 @@ function DashboardOverview() {
 					<CardTitle>Purchases</CardTitle>
 				</CardHeader>
 				<CardContent>
-					<p className="text-2xl font-bold">{stats.purchasesCount}</p>
+					<p className="font-bold text-2xl">{stats.purchasesCount}</p>
 				</CardContent>
 			</Card>
 		</div>

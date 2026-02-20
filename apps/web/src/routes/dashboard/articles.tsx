@@ -61,7 +61,7 @@ function MyArticles() {
 	return (
 		<div>
 			<div className="mb-4 flex items-center justify-between">
-				<h2 className="text-lg font-semibold">My Articles</h2>
+				<h2 className="font-semibold text-lg">My Articles</h2>
 				<Link to="/dashboard/articles/new">
 					<Button size="sm">New Article</Button>
 				</Link>
@@ -88,9 +88,7 @@ function MyArticles() {
 								</CardTitle>
 							</CardHeader>
 							<CardContent>
-								<p className="text-sm">
-									{article.price.toFixed(2)} €
-								</p>
+								<p className="text-sm">{article.price.toFixed(2)} €</p>
 							</CardContent>
 							<CardFooter className="gap-2">
 								<Link

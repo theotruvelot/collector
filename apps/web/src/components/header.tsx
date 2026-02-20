@@ -37,10 +37,7 @@ export default function Header() {
 				</nav>
 				<div className="flex items-center gap-2">
 					{session && unread > 0 && (
-						<Link
-							to="/dashboard/notifications"
-							className="relative text-sm"
-						>
+						<Link to="/dashboard/notifications" className="relative text-sm">
 							<span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] text-primary-foreground">
 								{unread}
 							</span>

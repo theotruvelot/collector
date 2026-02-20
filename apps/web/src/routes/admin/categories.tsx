@@ -84,11 +84,8 @@ function AdminCategories() {
 	return (
 		<div>
 			<div className="mb-4 flex items-center justify-between">
-				<h2 className="text-lg font-semibold">Categories</h2>
-				<Button
-					size="sm"
-					onClick={() => setShowForm(!showForm)}
-				>
+				<h2 className="font-semibold text-lg">Categories</h2>
+				<Button size="sm" onClick={() => setShowForm(!showForm)}>
 					{showForm ? "Cancel" : "New Category"}
 				</Button>
 			</div>
@@ -153,9 +150,7 @@ function AdminCategories() {
 			{loading ? (
 				<p className="text-muted-foreground text-sm">Loading...</p>
 			) : categories.length === 0 ? (
-				<p className="text-muted-foreground text-sm">
-					No categories yet.
-				</p>
+				<p className="text-muted-foreground text-sm">No categories yet.</p>
 			) : (
 				<div className="space-y-2">
 					{categories.map((cat) => (
@@ -163,14 +158,14 @@ function AdminCategories() {
 							<CardHeader>
 								<CardTitle className="text-sm">
 									{cat.name}
-									<span className="ml-2 text-muted-foreground font-normal">
+									<span className="ml-2 font-normal text-muted-foreground">
 										/{cat.slug}
 									</span>
 								</CardTitle>
 							</CardHeader>
 							{cat.description && (
 								<CardContent>
-									<p className="text-xs text-muted-foreground">
+									<p className="text-muted-foreground text-xs">
 										{cat.description}
 									</p>
 								</CardContent>

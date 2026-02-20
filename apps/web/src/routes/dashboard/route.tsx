@@ -13,7 +13,7 @@ export const Route = createFileRoute("/dashboard")({
 	beforeLoad: async () => {
 		const session = await authClient.getSession();
 		if (!session.data) {
-			redirect({ to: "/login", throw: true });
+			throw redirect({ to: "/login" });
 		}
 		return { session };
 	},
@@ -33,7 +33,7 @@ function DashboardLayout() {
 	return (
 		<div className="container mx-auto max-w-6xl px-4 py-6">
 			<div className="mb-4">
-				<h1 className="text-2xl font-bold">Dashboard</h1>
+				<h1 className="font-bold text-2xl">Dashboard</h1>
 				<p className="text-muted-foreground text-sm">
 					Welcome, {session.data?.user.name}
 				</p>
@@ -43,10 +43,7 @@ function DashboardLayout() {
 				{navLinks.map(({ to, label }) => (
 					<Link key={to} to={to}>
 						{({ isActive }) => (
-							<Button
-								variant={isActive ? "default" : "ghost"}
-								size="sm"
-							>
+							<Button variant={isActive ? "default" : "ghost"} size="sm">
 								{label}
 							</Button>
 						)}

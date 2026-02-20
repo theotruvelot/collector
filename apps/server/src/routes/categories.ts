@@ -7,7 +7,11 @@ import { requireAdmin } from "../middleware/auth";
 
 const categorySchema = z.object({
 	name: z.string().min(1).max(100),
-	slug: z.string().min(1).max(100).regex(/^[a-z0-9-]+$/),
+	slug: z
+		.string()
+		.min(1)
+		.max(100)
+		.regex(/^[a-z0-9-]+$/),
 	description: z.string().max(500).optional(),
 });
 

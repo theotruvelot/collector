@@ -29,7 +29,7 @@ function NewArticle() {
 		shippingCost: "0",
 		categoryId: "",
 		images: [""],
-	})
+	});
 
 	useEffect(() => {
 		api.get<Category[]>("/api/categories").then(setCategories);
@@ -46,7 +46,7 @@ function NewArticle() {
 				shippingCost: Number.parseFloat(form.shippingCost),
 				categoryId: form.categoryId,
 				images: form.images.filter((url) => url.trim()),
-			})
+			});
 			toast.success("Article submitted for review!");
 			navigate({ to: "/dashboard/articles" });
 		} catch (e: any) {
@@ -54,7 +54,7 @@ function NewArticle() {
 		} finally {
 			setSubmitting(false);
 		}
-	}
+	};
 
 	const addImageField = () =>
 		setForm((f) => ({ ...f, images: [...f.images, ""] }));
@@ -63,11 +63,11 @@ function NewArticle() {
 		setForm((f) => ({
 			...f,
 			images: f.images.map((img, i) => (i === index ? value : img)),
-		}))
+		}));
 
 	return (
 		<div className="max-w-2xl">
-			<h2 className="mb-4 text-lg font-semibold">Publish New Article</h2>
+			<h2 className="mb-4 font-semibold text-lg">Publish New Article</h2>
 
 			<form onSubmit={handleSubmit} className="space-y-4">
 				<div>
@@ -131,8 +131,7 @@ function NewArticle() {
 							onChange={(e) =>
 								setForm((f) => ({
 									...f,
-									shippingCost: (e.target as HTMLInputElement)
-										.value,
+									shippingCost: (e.target as HTMLInputElement).value,
 								}))
 							}
 						/>
@@ -171,10 +170,7 @@ function NewArticle() {
 							placeholder="https://..."
 							value={url}
 							onChange={(e) =>
-								updateImage(
-									i,
-									(e.target as HTMLInputElement).value,
-								)
+								updateImage(i, (e.target as HTMLInputElement).value)
 							}
 						/>
 					))}
@@ -189,11 +185,9 @@ function NewArticle() {
 				</div>
 
 				<Button type="submit" disabled={submitting} className="w-full">
-					{submitting
-						? "Submitting..."
-						: "Submit for Review"}
+					{submitting ? "Submitting..." : "Submit for Review"}
 				</Button>
 			</form>
 		</div>
-	)
+	);
 }

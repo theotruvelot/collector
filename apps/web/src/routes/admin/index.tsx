@@ -1,12 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 
-import {
-	Card,
-	CardContent,
-	CardHeader,
-	CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { api } from "@/lib/api";
 
 export const Route = createFileRoute("/admin/")({
@@ -38,9 +33,7 @@ function AdminDashboard() {
 					<CardTitle>Categories</CardTitle>
 				</CardHeader>
 				<CardContent>
-					<p className="text-2xl font-bold">
-						{stats.categoriesCount}
-					</p>
+					<p className="font-bold text-2xl">{stats.categoriesCount}</p>
 				</CardContent>
 			</Card>
 			<Card>
@@ -48,7 +41,7 @@ function AdminDashboard() {
 					<CardTitle>Pending Moderation</CardTitle>
 				</CardHeader>
 				<CardContent>
-					<p className="text-2xl font-bold">{stats.pendingCount}</p>
+					<p className="font-bold text-2xl">{stats.pendingCount}</p>
 				</CardContent>
 			</Card>
 		</div>

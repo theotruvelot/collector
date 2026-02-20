@@ -1,6 +1,5 @@
 import { db } from "@collector/db";
-import { article } from "@collector/db/schema/marketplace";
-import { notification, order } from "@collector/db/schema/marketplace";
+import { article, notification, order } from "@collector/db/schema/marketplace";
 import { and, desc, eq, sql } from "drizzle-orm";
 import { Hono } from "hono";
 import { z } from "zod";
@@ -74,9 +73,7 @@ const app = new Hono()
 		const type = c.req.query("type");
 
 		const condition =
-			type === "sales"
-				? eq(order.sellerId, userId)
-				: eq(order.buyerId, userId);
+			type === "sales" ? eq(order.sellerId, userId) : eq(order.buyerId, userId);
 
 		const orders = await db
 			.select()
