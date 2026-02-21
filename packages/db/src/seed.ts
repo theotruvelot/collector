@@ -28,6 +28,7 @@ if (!existsSync(MINIFLARE_DIR)) {
     process.exit(1);
 }
 
+
 const sqliteFiles = readdirSync(MINIFLARE_DIR).filter((f) =>
     f.endsWith(".sqlite"),
 );
