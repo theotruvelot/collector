@@ -88,7 +88,7 @@ function HomeComponent() {
 							</Link>
 						)}
 						{session && (
-							<Link to="/dashboard/articles_.new">
+							<Link to="/dashboard/articles/new">
 								<Button variant="outline" size="lg">
 									List an item
 								</Button>
@@ -163,7 +163,7 @@ function HomeComponent() {
 							<p className="text-muted-foreground text-sm">
 								No articles yet. Be the first to sell!
 							</p>
-							<Link to={session ? "/dashboard/articles_.new" : "/login"}>
+							<Link to={session ? "/dashboard/articles/new" : "/login"}>
 								<Button size="sm">List an item</Button>
 							</Link>
 						</div>
