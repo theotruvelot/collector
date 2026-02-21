@@ -77,15 +77,15 @@ const app = new Hono()
 
 		const images = results.length
 			? await db
-					.select()
-					.from(articleImage)
-					.where(
-						sql`${articleImage.articleId} IN (${sql.join(
-							results.map((r) => sql`${r.id}`),
-							sql`,`,
-						)})`,
-					)
-					.all()
+				.select()
+				.from(articleImage)
+				.where(
+					sql`${articleImage.articleId} IN (${sql.join(
+						results.map((r) => sql`${r.id}`),
+						sql`,`,
+					)})`,
+				)
+				.all()
 			: [];
 
 		const articlesWithImages = results.map((a) => ({
@@ -98,6 +98,120 @@ const app = new Hono()
 		return c.json({ articles: articlesWithImages, page, limit });
 	})
 
+	// --- Seller routes ---
+	.get("/seller/my-articles", requireAuth, async (c) => {
+		const userId = c.get("user").id;
+
+		const articles = await db
+			.select()
+			.from(article)
+			.where(eq(article.sellerId, userId))
+			.orderBy(desc(article.createdAt))
+			.all();
+
+		const images = articles.length
+			? await db
+				.select()
+				.from(articleImage)
+				.where(
+					sql`${articleImage.articleId} IN (${sql.join(
+						articles.map((r) => sql`${r.id}`),
+						sql`,`,
+					)})`,
+				)
+				.all()
+			: [];
+
+		return c.json(
+			articles.map((a) => ({
+				...a,
+				images: images
+					.filter((img) => img.articleId === a.id)
+					.sort((x, y) => x.order - y.order),
+			})),
+		);
+	})
+
+	// --- Admin moderation ---
+	.get("/admin/pending", requireAdmin, async (c) => {
+		const pending = await db
+			.select()
+			.from(article)
+			.where(eq(article.status, "pending"))
+			.orderBy(article.createdAt)
+			.all();
+		return c.json(pending);
+	})
+
+	.put("/admin/:id/moderate", requireAdmin, async (c) => {
+		const id = c.req.param("id");
+		const body = await c.req.json();
+		const schema = z.object({
+			status: z.enum(["approved", "rejected"]),
+			reason: z.string().optional(),
+		});
+		const parsed = schema.safeParse(body);
+		if (!parsed.success) {
+			return c.json({ error: parsed.error.flatten() }, 400);
+		}
+
+		const existing = await db
+			.select()
+			.from(article)
+			.where(eq(article.id, id))
+			.get();
+		if (!existing) {
+			return c.json({ error: "Article not found" }, 404);
+		}
+
+		const updated = await db
+			.update(article)
+			.set({ status: parsed.data.status })
+			.where(eq(article.id, id))
+			.returning()
+			.get();
+
+		await db.insert(notification).values({
+			userId: existing.sellerId,
+			type: "moderation",
+			title:
+				parsed.data.status === "approved"
+					? "Article approved"
+					: "Article rejected",
+			message:
+				parsed.data.status === "approved"
+					? `Your article "${existing.title}" has been approved and is now live.`
+					: `Your article "${existing.title}" was rejected. ${parsed.data.reason || ""}`,
+			articleId: id,
+		});
+
+		return c.json(updated);
+	})
+
+	.delete("/admin/:id", requireAdmin, async (c) => {
+		const id = c.req.param("id");
+		const existing = await db
+			.select()
+			.from(article)
+			.where(eq(article.id, id))
+			.get();
+		if (!existing) {
+			return c.json({ error: "Article not found" }, 404);
+		}
+
+		await db.insert(notification).values({
+			userId: existing.sellerId,
+			type: "moderation",
+			title: "Article removed",
+			message: `Your article "${existing.title}" was removed for violating platform guidelines.`,
+			articleId: id,
+		});
+
+		await db.delete(article).where(eq(article.id, id)).run();
+		return c.json({ success: true });
+	})
+
+	// --- Public single article (keep last: /:slug catches everything) ---
 	.get("/:slug", async (c) => {
 		const slug = c.req.param("slug");
 
@@ -131,20 +245,6 @@ const app = new Hono()
 			.get();
 
 		return c.json({ ...found, images, seller, category: cat });
-	})
-
-	// --- Seller routes ---
-	.get("/seller/my-articles", requireAuth, async (c) => {
-		const userId = c.get("user").id;
-
-		const articles = await db
-			.select()
-			.from(article)
-			.where(eq(article.sellerId, userId))
-			.orderBy(desc(article.createdAt))
-			.all();
-
-		return c.json(articles);
 	})
 
 	.post("/", requireAuth, async (c) => {
@@ -263,85 +363,6 @@ const app = new Hono()
 		if (!deleted) {
 			return c.json({ error: "Article not found" }, 404);
 		}
-		return c.json({ success: true });
-	})
-
-	// --- Admin moderation ---
-	.get("/admin/pending", requireAdmin, async (c) => {
-		const pending = await db
-			.select()
-			.from(article)
-			.where(eq(article.status, "pending"))
-			.orderBy(article.createdAt)
-			.all();
-		return c.json(pending);
-	})
-
-	.put("/admin/:id/moderate", requireAdmin, async (c) => {
-		const id = c.req.param("id");
-		const body = await c.req.json();
-		const schema = z.object({
-			status: z.enum(["approved", "rejected"]),
-			reason: z.string().optional(),
-		});
-		const parsed = schema.safeParse(body);
-		if (!parsed.success) {
-			return c.json({ error: parsed.error.flatten() }, 400);
-		}
-
-		const existing = await db
-			.select()
-			.from(article)
-			.where(eq(article.id, id))
-			.get();
-		if (!existing) {
-			return c.json({ error: "Article not found" }, 404);
-		}
-
-		const updated = await db
-			.update(article)
-			.set({ status: parsed.data.status })
-			.where(eq(article.id, id))
-			.returning()
-			.get();
-
-		await db.insert(notification).values({
-			userId: existing.sellerId,
-			type: "moderation",
-			title:
-				parsed.data.status === "approved"
-					? "Article approved"
-					: "Article rejected",
-			message:
-				parsed.data.status === "approved"
-					? `Your article "${existing.title}" has been approved and is now live.`
-					: `Your article "${existing.title}" was rejected. ${parsed.data.reason || ""}`,
-			articleId: id,
-		});
-
-		return c.json(updated);
-	})
-
-	.delete("/admin/:id", requireAdmin, async (c) => {
-		const id = c.req.param("id");
-		const existing = await db
-			.select()
-			.from(article)
-			.where(eq(article.id, id))
-			.get();
-		if (!existing) {
-			return c.json({ error: "Article not found" }, 404);
-		}
-
-		await db.insert(notification).values({
-			userId: existing.sellerId,
-			type: "moderation",
-			title: "Article removed",
-			message: `Your article "${existing.title}" was removed for violating platform guidelines.`,
-			articleId: id,
-		});
-
-		await db.delete(article).where(eq(article.id, id)).run();
 		return c.json({ success: true });
 	});
 

@@ -1,54 +1,55 @@
 {
-	"name": "collector",
-	"private": true,
-	"workspaces": {
-		"packages": [
-			"apps/*",
-			"packages/*"
-		],
-		"catalog": {
-			"dotenv": "^17.2.2",
-			"zod": "^4.1.13",
-			"typescript": "^5",
-			"@types/node": "^22.13.14",
-			"@cloudflare/workers-types": "^4.20251213.0",
-			"better-auth": "^1.4.18",
-			"alchemy": "^0.82.1",
-			"@libsql/client": "0.15.15",
-			"libsql": "0.5.22",
-			"@polar-sh/better-auth": "^1.6.4"
-		}
-	},
-	"type": "module",
-	"scripts": {
-		"dev": "turbo dev",
-		"build": "turbo build",
-		"check-types": "turbo check-types",
-		"dev:native": "turbo -F native dev",
-		"dev:web": "turbo -F web dev",
-		"dev:server": "turbo -F server dev",
-		"db:push": "turbo -F @collector/db db:push",
-		"db:generate": "turbo -F @collector/db db:generate",
-		"deploy": "turbo -F @collector/infra deploy --",
-		"destroy": "turbo -F @collector/infra destroy --",
-		"test:load": "k6 run tests/load.js",
-		"check": "biome check --write .",
-		"test": "turbo test"
-	},
-	"dependencies": {
-		"@collector/env": "workspace:*",
-		"bun-types": "^1.3.9",
-		"dotenv": "^17.3.1",
-		"zod": "^4.3.6"
-	},
-	"devDependencies": {
-		"@biomejs/biome": "^2.4.3",
-		"@cloudflare/workers-types": "^4.20260227.0",
-		"@collector/config": "workspace:*",
-		"@types/bun": "^1.3.9",
-		"@types/node": "^25.3.0",
-		"turbo": "^2.8.10",
-		"typescript": "^5.9.3"
-	},
-	"packageManager": "bun@1.3.2"
+  "name": "collector",
+  "private": true,
+  "workspaces": {
+    "packages": [
+      "apps/*",
+      "packages/*"
+    ],
+    "catalog": {
+      "dotenv": "^17.2.2",
+      "zod": "^4.1.13",
+      "typescript": "^5",
+      "@types/node": "^22.13.14",
+      "@cloudflare/workers-types": "^4.20251213.0",
+      "better-auth": "^1.4.18",
+      "alchemy": "^0.82.1",
+      "@libsql/client": "0.15.15",
+      "libsql": "0.5.22",
+      "@polar-sh/better-auth": "^1.6.4"
+    }
+  },
+  "type": "module",
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "check-types": "turbo check-types",
+    "dev:native": "turbo -F native dev",
+    "dev:web": "turbo -F web dev",
+    "dev:server": "turbo -F server dev",
+    "db:push": "turbo -F @collector/db db:push",
+    "db:generate": "turbo -F @collector/db db:generate",
+    "db:seed": "turbo -F @collector/db db:seed",
+    "deploy": "turbo -F @collector/infra deploy --",
+    "destroy": "turbo -F @collector/infra destroy --",
+    "test:load": "k6 run tests/load.js",
+    "check": "biome check --write .",
+    "test": "turbo test"
+  },
+  "dependencies": {
+    "@collector/env": "workspace:*",
+    "bun-types": "^1.3.9",
+    "dotenv": "^17.3.1",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.4.3",
+    "@cloudflare/workers-types": "^4.20260227.0",
+    "@collector/config": "workspace:*",
+    "@types/bun": "^1.3.9",
+    "@types/node": "^25.3.0",
+    "turbo": "^2.8.10",
+    "typescript": "^5.9.3"
+  },
+  "packageManager": "bun@1.3.2"
 }

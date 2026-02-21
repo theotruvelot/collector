@@ -1,6 +1,9 @@
 {
 	"extends": "@collector/config/tsconfig.base.json",
 	"compilerOptions": {
+		"types": [
+			"bun"
+		],
 		"declaration": true,
 		"declarationMap": true,
 		"sourceMap": true,
