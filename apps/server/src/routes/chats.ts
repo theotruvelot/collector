@@ -1,13 +1,12 @@
 import { db } from "@collector/db";
 import { chat, chatMessage } from "@collector/db/schema/chat";
 import { article as articleTable } from "@collector/db/schema/marketplace";
-import { and, desc, eq, or } from "drizzle-orm";
+import { and, desc, eq, gt, or } from "drizzle-orm";
 import { Hono } from "hono";
+import { type FetchHandler, sse } from "cloudflare-workers-sse";
 import { requireAuth, type AuthEnv } from "../middleware/auth";
-import { EventEmitter } from "node:events";
 
 const chats = new Hono<AuthEnv>();
-const chatEmitter = new EventEmitter();
 
 chats.use("*", requireAuth);
 
@@ -111,7 +110,7 @@ chats.get("/:chatId/messages", async (c) => {
     return c.json(messages);
 });
 
-// SSE endpoint for real-time messages
+// SSE endpoint for real-time messages using cloudflare-workers-sse
 chats.get("/:chatId/stream", async (c) => {
     const chatId = c.req.param("chatId");
     const userSession = c.get("user");
@@ -122,49 +121,49 @@ chats.get("/:chatId/stream", async (c) => {
     });
 
     if (!chatDetails || (chatDetails.buyerId !== userSession.id && chatDetails.sellerId !== userSession.id)) {
-        return c.json({ error: "Unauthorized" }, 403); // Can't easily return 403 in SSE stream before starting, but we can close it
+        return c.json({ error: "Unauthorized" }, 403);
     }
 
-    const encoder = new TextEncoder();
+    const handler: FetchHandler<AuthEnv> = async function* () {
+        let lastCreatedAt: Date | null = null;
 
-    let cleanup: (() => void) | null = null;
+        // Start from the latest existing message to avoid re-sending history
+        const latestMessage = await db.query.chatMessage.findFirst({
+            where: eq(chatMessage.chatId, chatId),
+            orderBy: [desc(chatMessage.createdAt)],
+        });
 
-    const body = new ReadableStream({
-        start(controller) {
-            const write = (event: string, data: string) => {
-                try {
-                    controller.enqueue(encoder.encode(`event: ${event}\ndata: ${data}\n\n`));
-                } catch {
-                    cleanup?.();
-                    cleanup = null;
-                }
-            };
+        if (latestMessage) {
+            lastCreatedAt = latestMessage.createdAt;
+        }
 
-            const listener = (message: any) => write("message", JSON.stringify(message));
+        while (true) {
+            const where =
+                lastCreatedAt !== null
+                    ? and(eq(chatMessage.chatId, chatId), gt(chatMessage.createdAt, lastCreatedAt))
+                    : eq(chatMessage.chatId, chatId);
 
-            chatEmitter.on(`chat:${chatId}`, listener);
+            const newMessages = await db.query.chatMessage.findMany({
+                where,
+                orderBy: [chatMessage.createdAt],
+            });
 
-            const pingInterval = setInterval(() => write("ping", "ping"), 25000);
+            for (const message of newMessages) {
+                lastCreatedAt = message.createdAt;
+                yield {
+                    event: "message",
+                    data: message,
+                };
+            }
 
-            cleanup = () => {
-                chatEmitter.off(`chat:${chatId}`, listener);
-                clearInterval(pingInterval);
-            };
-        },
-        cancel() {
-            cleanup?.();
-            cleanup = null;
-        },
-    });
+            // Simple polling loop to check for new messages
+            await new Promise((resolve) => setTimeout(resolve, 2000));
+        }
+    };
 
-    return new Response(body, {
-        headers: {
-            "Content-Type": "text/event-stream",
-            "Cache-Control": "no-cache, no-transform",
-            Connection: "keep-alive",
-            "X-Accel-Buffering": "no",
-        },
-    });
+    const fetchHandler = sse(handler);
+
+    return fetchHandler(c.req.raw, c.env, c.executionCtx);
 });
 
 // Send a message
@@ -210,9 +209,6 @@ chats.post("/:chatId/messages", async (c) => {
 
     // Update chat's updatedAt timestamp
     await db.update(chat).set({ updatedAt: new Date() }).where(eq(chat.id, chatId));
-
-    // Emit event to SSE clients
-    chatEmitter.emit(`chat:${chatId}`, newMessage);
 
     return c.json(newMessage);
 });

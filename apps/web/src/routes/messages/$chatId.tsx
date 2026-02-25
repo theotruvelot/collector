@@ -1,8 +1,8 @@
-import { env } from "@collector/env/web";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowUp, MoveLeft } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
+import { env } from "@collector/env/web";
 import { authClient } from "@/lib/auth-client";
 import { api } from "@/lib/api";
 
@@ -45,29 +45,38 @@ function RouteComponent() {
         scrollToBottom();
     }, [messages]);
 
+    // SSE pour les nouveaux messages en temps réel
     useEffect(() => {
-        if (!session) return;
+        if (!session || loading) return;
 
-        const eventSource = new EventSource(`${env.VITE_SERVER_URL}/api/chats/${chatId}/stream`, {
-            withCredentials: true,
-        });
+        const sseUrl = `${env.VITE_SERVER_URL}/api/chats/${chatId}/stream`;
 
-        eventSource.addEventListener("message", (event) => {
+        const eventSource = new EventSource(sseUrl, { withCredentials: true });
+
+        const onMessage = (event: MessageEvent) => {
             try {
-                const message = JSON.parse(event.data);
+                const message: Message = JSON.parse(event.data);
                 setMessages((prev) => {
-                    if (prev.find((m) => m.id === message.id)) return prev;
+                    if (prev.some((m) => m.id === message.id)) return prev;
                     return [...prev, message];
                 });
-            } catch (e) {
-                console.error("Failed to parse SSE message", e);
+            } catch {
+                // Ignore malformed events
             }
-        });
+        };
 
-        eventSource.addEventListener("ping", () => { });
+        eventSource.addEventListener("message", onMessage);
 
-        return () => eventSource.close();
-    }, [chatId, session]);
+        eventSource.onerror = () => {
+            // En cas d'erreur, on ferme la connexion, EventSource va tenter de se reconnecter automatiquement
+            eventSource.close();
+        };
+
+        return () => {
+            eventSource.removeEventListener("message", onMessage);
+            eventSource.close();
+        };
+    }, [chatId, session, loading]);
 
     const sendMessage = async (e: React.FormEvent) => {
         e.preventDefault();

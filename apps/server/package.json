@@ -13,6 +13,7 @@
 		"@collector/db": "workspace:*",
 		"@collector/env": "workspace:*",
 		"better-auth": "catalog:",
+		"cloudflare-workers-sse": "^2.1.0",
 		"bun-types": "^1.3.9",
 		"dotenv": "catalog:",
 		"drizzle-orm": "^0.45.1",
