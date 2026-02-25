@@ -75,10 +75,10 @@ function RouteComponent() {
 
         setSending(true);
         try {
-            const data = await api.post<Message>(`/api/chats/${chatId}/messages`, {
+            await api.post<Message>(`/api/chats/${chatId}/messages`, {
                 content: newMessage.trim(),
             });
-            setMessages((prev) => [...prev, data]);
+            // Le SSE livre le message à tous (expéditeur inclus) — pas besoin d'ajout ici
             setNewMessage("");
         } catch (error: any) {
             toast.error(error.message || "Failed to send message");
