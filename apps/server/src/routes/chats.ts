@@ -127,8 +127,8 @@ chats.get("/:chatId/stream", async (c) => {
     }
 
     return streamSSE(c, async (stream) => {
-        const listener = (message: any) => {
-            stream.writeSSE({
+        const listener = async (message: any) => {
+            await stream.writeSSE({
                 data: JSON.stringify(message),
                 event: "message",
             });
@@ -137,9 +137,9 @@ chats.get("/:chatId/stream", async (c) => {
         chatEmitter.on(`chat:${chatId}`, listener);
 
         // Keep connection alive
-        const interval = setInterval(() => {
-            stream.writeSSE({ data: "ping", event: "ping" });
-        }, 30000);
+        const interval = setInterval(async () => {
+            await stream.writeSSE({ data: "ping", event: "ping" });
+        }, 25000);
 
         // Cleanup on disconnect
         stream.onAbort(() => {
