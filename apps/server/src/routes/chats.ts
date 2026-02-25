@@ -3,7 +3,7 @@ import { chat, chatMessage } from "@collector/db/schema/chat";
 import { article as articleTable } from "@collector/db/schema/marketplace";
 import { and, desc, eq, gt, or } from "drizzle-orm";
 import { Hono } from "hono";
-import { type FetchHandler, sse } from "cloudflare-workers-sse";
+import { sse } from "cloudflare-workers-sse";
 import { requireAuth, type AuthEnv } from "../middleware/auth";
 
 const chats = new Hono<AuthEnv>();
@@ -124,7 +124,7 @@ chats.get("/:chatId/stream", async (c) => {
         return c.json({ error: "Unauthorized" }, 403);
     }
 
-    const handler: FetchHandler<AuthEnv> = async function* () {
+    const handler = async function* () {
         let lastCreatedAt: Date | null = null;
 
         // Start from the latest existing message to avoid re-sending history
@@ -161,9 +161,9 @@ chats.get("/:chatId/stream", async (c) => {
         }
     };
 
-    const fetchHandler = sse(handler);
+    const fetchHandler = sse(handler as any);
 
-    return fetchHandler(c.req.raw, c.env, c.executionCtx);
+    return fetchHandler(c.req.raw as any, c.env as AuthEnv, c.executionCtx as any);
 });
 
 // Send a message
