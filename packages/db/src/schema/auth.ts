@@ -1,6 +1,7 @@
 import { relations, sql } from "drizzle-orm";
 import { index, integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { article, notification, order } from "./marketplace";
+import { chat } from "./chat";
 
 export const userRoleEnum = ["user", "admin"] as const;
 export type UserRole = (typeof userRoleEnum)[number];
@@ -99,6 +100,8 @@ export const userRelations = relations(user, ({ many }) => ({
 	buyerOrders: many(order, { relationName: "buyerOrders" }),
 	sellerOrders: many(order, { relationName: "sellerOrders" }),
 	notifications: many(notification),
+	buyerChats: many(chat, { relationName: "buyerChats" }),
+	sellerChats: many(chat, { relationName: "sellerChats" }),
 }));
 
 export const sessionRelations = relations(session, ({ one }) => ({

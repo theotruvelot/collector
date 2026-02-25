@@ -40,6 +40,7 @@ function ArticleDetailComponent() {
 	const [article, setArticle] = useState<ArticleDetail | null>(null);
 	const [loading, setLoading] = useState(true);
 	const [buying, setBuying] = useState(false);
+	const [contacting, setContacting] = useState(false);
 	const [selectedImage, setSelectedImage] = useState(0);
 
 	useEffect(() => {
@@ -64,6 +65,27 @@ function ArticleDetailComponent() {
 			toast.error(e.message);
 		} finally {
 			setBuying(false);
+		}
+	};
+
+	const handleContact = async () => {
+		if (!session) {
+			navigate({ to: "/login" });
+			return;
+		}
+		setContacting(true);
+		try {
+			const newChat = await api.post<{ id: string }>("/api/chats", {
+				articleId: article!.id,
+			});
+			navigate({
+				to: "/messages/$chatId",
+				params: { chatId: newChat.id },
+			});
+		} catch (e: any) {
+			toast.error(e.message);
+		} finally {
+			setContacting(false);
 		}
 	};
 
@@ -114,11 +136,10 @@ function ArticleDetailComponent() {
 											key={img.id}
 											type="button"
 											onClick={() => setSelectedImage(i)}
-											className={`h-16 w-16 overflow-hidden border-2 ${
-												i === selectedImage
-													? "border-primary"
-													: "border-transparent"
-											}`}
+											className={`h-16 w-16 overflow-hidden border-2 ${i === selectedImage
+												? "border-primary"
+												: "border-transparent"
+												}`}
 										>
 											<img
 												src={img.url}
@@ -196,13 +217,23 @@ function ArticleDetailComponent() {
 									This is your article
 								</Button>
 							) : (
-								<Button
-									className="w-full"
-									onClick={handleBuy}
-									disabled={buying}
-								>
-									{buying ? "Processing..." : `Buy for ${total.toFixed(2)} €`}
-								</Button>
+								<div className="flex w-full flex-col gap-2">
+									<Button
+										className="w-full"
+										onClick={handleBuy}
+										disabled={buying}
+									>
+										{buying ? "Processing..." : `Buy for ${total.toFixed(2)} €`}
+									</Button>
+									<Button
+										variant="outline"
+										className="w-full"
+										onClick={handleContact}
+										disabled={contacting}
+									>
+										{contacting ? "Connexion..." : "💬 Contacter le vendeur"}
+									</Button>
+								</div>
 							)}
 						</CardFooter>
 					</Card>

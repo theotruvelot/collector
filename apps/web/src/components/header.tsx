@@ -1,5 +1,5 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { BellIcon, GalleryVerticalEndIcon } from "lucide-react";
+import { BellIcon, GalleryVerticalEndIcon, MessageCircleIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { api } from "@/lib/api";
@@ -94,6 +94,15 @@ export default function Header() {
 							<span className="bg-primary text-primary-foreground absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full text-[9px] font-bold">
 								{unread > 9 ? "9+" : unread}
 							</span>
+						</Link>
+					)}
+					{session && (
+						<Link
+							to="/messages"
+							className="text-muted-foreground hover:text-foreground hover:bg-muted relative rounded-sm p-1.5 transition-colors"
+							title="Messages"
+						>
+							<MessageCircleIcon className="size-4" />
 						</Link>
 					)}
 					<ModeToggle />

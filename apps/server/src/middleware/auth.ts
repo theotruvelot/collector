@@ -8,7 +8,7 @@ export type AuthUser = {
 	role: string;
 };
 
-type AuthEnv = {
+export type AuthEnv = {
 	Variables: {
 		user: AuthUser;
 	};

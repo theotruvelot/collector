@@ -8,6 +8,7 @@ import articles from "./routes/articles";
 import categories from "./routes/categories";
 import notifications from "./routes/notifications";
 import orders from "./routes/orders";
+import chats from "./routes/chats";
 
 const app = new Hono();
 
@@ -29,6 +30,7 @@ app.route("/api/categories", categories);
 app.route("/api/articles", articles);
 app.route("/api/orders", orders);
 app.route("/api/notifications", notifications);
+app.route("/api/chats", chats);
 
 app.get("/", (c) => {
 	return c.text("OK");

@@ -15,8 +15,10 @@ import { Route as CatalogRouteImport } from './routes/catalog'
 import { Route as DashboardRouteRouteImport } from './routes/dashboard/route'
 import { Route as AdminRouteRouteImport } from './routes/admin/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as MessagesIndexRouteImport } from './routes/messages/index'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
+import { Route as MessagesChatIdRouteImport } from './routes/messages/$chatId'
 import { Route as DashboardSalesRouteImport } from './routes/dashboard/sales'
 import { Route as DashboardPurchasesRouteImport } from './routes/dashboard/purchases'
 import { Route as DashboardNotificationsRouteImport } from './routes/dashboard/notifications'
@@ -57,6 +59,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MessagesIndexRoute = MessagesIndexRouteImport.update({
+  id: '/messages/',
+  path: '/messages/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DashboardIndexRoute = DashboardIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -66,6 +73,11 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AdminRouteRoute,
+} as any)
+const MessagesChatIdRoute = MessagesChatIdRouteImport.update({
+  id: '/messages/$chatId',
+  path: '/messages/$chatId',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardSalesRoute = DashboardSalesRouteImport.update({
   id: '/sales',
@@ -127,8 +139,10 @@ export interface FileRoutesByFullPath {
   '/dashboard/notifications': typeof DashboardNotificationsRoute
   '/dashboard/purchases': typeof DashboardPurchasesRoute
   '/dashboard/sales': typeof DashboardSalesRoute
+  '/messages/$chatId': typeof MessagesChatIdRoute
   '/admin/': typeof AdminIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
+  '/messages/': typeof MessagesIndexRoute
   '/dashboard/articles/new': typeof DashboardArticlesNewRoute
   '/dashboard/articles/$id/edit': typeof DashboardArticlesIdEditRoute
 }
@@ -144,8 +158,10 @@ export interface FileRoutesByTo {
   '/dashboard/notifications': typeof DashboardNotificationsRoute
   '/dashboard/purchases': typeof DashboardPurchasesRoute
   '/dashboard/sales': typeof DashboardSalesRoute
+  '/messages/$chatId': typeof MessagesChatIdRoute
   '/admin': typeof AdminIndexRoute
   '/dashboard': typeof DashboardIndexRoute
+  '/messages': typeof MessagesIndexRoute
   '/dashboard/articles/new': typeof DashboardArticlesNewRoute
   '/dashboard/articles/$id/edit': typeof DashboardArticlesIdEditRoute
 }
@@ -164,8 +180,10 @@ export interface FileRoutesById {
   '/dashboard/notifications': typeof DashboardNotificationsRoute
   '/dashboard/purchases': typeof DashboardPurchasesRoute
   '/dashboard/sales': typeof DashboardSalesRoute
+  '/messages/$chatId': typeof MessagesChatIdRoute
   '/admin/': typeof AdminIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
+  '/messages/': typeof MessagesIndexRoute
   '/dashboard/articles_/new': typeof DashboardArticlesNewRoute
   '/dashboard/articles_/$id/edit': typeof DashboardArticlesIdEditRoute
 }
@@ -185,8 +203,10 @@ export interface FileRouteTypes {
     | '/dashboard/notifications'
     | '/dashboard/purchases'
     | '/dashboard/sales'
+    | '/messages/$chatId'
     | '/admin/'
     | '/dashboard/'
+    | '/messages/'
     | '/dashboard/articles/new'
     | '/dashboard/articles/$id/edit'
   fileRoutesByTo: FileRoutesByTo
@@ -202,8 +222,10 @@ export interface FileRouteTypes {
     | '/dashboard/notifications'
     | '/dashboard/purchases'
     | '/dashboard/sales'
+    | '/messages/$chatId'
     | '/admin'
     | '/dashboard'
+    | '/messages'
     | '/dashboard/articles/new'
     | '/dashboard/articles/$id/edit'
   id:
@@ -221,8 +243,10 @@ export interface FileRouteTypes {
     | '/dashboard/notifications'
     | '/dashboard/purchases'
     | '/dashboard/sales'
+    | '/messages/$chatId'
     | '/admin/'
     | '/dashboard/'
+    | '/messages/'
     | '/dashboard/articles_/new'
     | '/dashboard/articles_/$id/edit'
   fileRoutesById: FileRoutesById
@@ -235,6 +259,8 @@ export interface RootRouteChildren {
   LoginRoute: typeof LoginRoute
   SuccessRoute: typeof SuccessRoute
   ArticleSlugRoute: typeof ArticleSlugRoute
+  MessagesChatIdRoute: typeof MessagesChatIdRoute
+  MessagesIndexRoute: typeof MessagesIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -281,6 +307,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/messages/': {
+      id: '/messages/'
+      path: '/messages'
+      fullPath: '/messages/'
+      preLoaderRoute: typeof MessagesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/dashboard/': {
       id: '/dashboard/'
       path: '/'
@@ -294,6 +327,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/'
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRouteRoute
+    }
+    '/messages/$chatId': {
+      id: '/messages/$chatId'
+      path: '/messages/$chatId'
+      fullPath: '/messages/$chatId'
+      preLoaderRoute: typeof MessagesChatIdRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/dashboard/sales': {
       id: '/dashboard/sales'
@@ -409,6 +449,8 @@ const rootRouteChildren: RootRouteChildren = {
   LoginRoute: LoginRoute,
   SuccessRoute: SuccessRoute,
   ArticleSlugRoute: ArticleSlugRoute,
+  MessagesChatIdRoute: MessagesChatIdRoute,
+  MessagesIndexRoute: MessagesIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
