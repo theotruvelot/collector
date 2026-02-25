@@ -3,7 +3,6 @@ import { chat, chatMessage } from "@collector/db/schema/chat";
 import { article as articleTable } from "@collector/db/schema/marketplace";
 import { and, desc, eq, or } from "drizzle-orm";
 import { Hono } from "hono";
-import { streamSSE } from "hono/streaming";
 import { requireAuth, type AuthEnv } from "../middleware/auth";
 import { EventEmitter } from "node:events";
 
@@ -126,29 +125,45 @@ chats.get("/:chatId/stream", async (c) => {
         return c.json({ error: "Unauthorized" }, 403); // Can't easily return 403 in SSE stream before starting, but we can close it
     }
 
-    return streamSSE(c, async (stream) => {
-        const listener = async (message: any) => {
-            await stream.writeSSE({
-                data: JSON.stringify(message),
-                event: "message",
-            });
-        };
+    const encoder = new TextEncoder();
 
-        chatEmitter.on(`chat:${chatId}`, listener);
+    let cleanup: (() => void) | null = null;
 
-        // Keep connection alive
-        const interval = setInterval(async () => {
-            await stream.writeSSE({ data: "ping", event: "ping" });
-        }, 25000);
+    const body = new ReadableStream({
+        start(controller) {
+            const write = (event: string, data: string) => {
+                try {
+                    controller.enqueue(encoder.encode(`event: ${event}\ndata: ${data}\n\n`));
+                } catch {
+                    cleanup?.();
+                    cleanup = null;
+                }
+            };
 
-        // Cleanup on disconnect
-        stream.onAbort(() => {
-            chatEmitter.off(`chat:${chatId}`, listener);
-            clearInterval(interval);
-        });
+            const listener = (message: any) => write("message", JSON.stringify(message));
 
-        // Wait forever
-        await new Promise(() => { });
+            chatEmitter.on(`chat:${chatId}`, listener);
+
+            const pingInterval = setInterval(() => write("ping", "ping"), 25000);
+
+            cleanup = () => {
+                chatEmitter.off(`chat:${chatId}`, listener);
+                clearInterval(pingInterval);
+            };
+        },
+        cancel() {
+            cleanup?.();
+            cleanup = null;
+        },
+    });
+
+    return new Response(body, {
+        headers: {
+            "Content-Type": "text/event-stream",
+            "Cache-Control": "no-cache, no-transform",
+            Connection: "keep-alive",
+            "X-Accel-Buffering": "no",
+        },
     });
 });
 
