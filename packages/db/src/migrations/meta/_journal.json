@@ -29,6 +29,13 @@
       "when": 1772012862344,
       "tag": "0003_far_imperial_guard",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "6",
+      "when": 1772128826837,
+      "tag": "0004_flat_jack_murdock",
+      "breakpoints": true
     }
   ]
 }

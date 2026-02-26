@@ -49,18 +49,8 @@ function HomeComponent() {
 	return (
 		<div className="flex flex-col">
 			{/* ── Hero ─────────────────────────────────────────────── */}
-			<section className="relative overflow-hidden border-b px-4 py-16 md:py-24">
-				{/* subtle gradient blob */}
-				<div
-					aria-hidden
-					className="bg-primary/10 pointer-events-none absolute -top-24 -left-24 h-96 w-96 rounded-full blur-3xl"
-				/>
-				<div
-					aria-hidden
-					className="pointer-events-none absolute right-0 bottom-0 h-64 w-64 rounded-full bg-violet-500/10 blur-3xl"
-				/>
-
-				<div className="relative mx-auto max-w-6xl">
+			<section className="border-b px-4 py-16 md:py-24">
+				<div className="mx-auto max-w-6xl">
 					<p className="text-primary mb-3 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest">
 						<TagIcon className="size-3.5" />
 						The collector's marketplace

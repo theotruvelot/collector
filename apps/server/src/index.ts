@@ -1,6 +1,7 @@
 import { auth } from "@collector/auth";
 import { env } from "@collector/env/server";
-import { Hono } from "hono";
+import { OpenAPIHono } from "@hono/zod-openapi";
+import { Scalar } from "@scalar/hono-api-reference";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
 import { secureHeaders } from "hono/secure-headers";
@@ -10,7 +11,7 @@ import notifications from "./routes/notifications";
 import orders from "./routes/orders";
 import chats from "./routes/chats";
 
-const app = new Hono();
+const app = new OpenAPIHono();
 
 app.use(logger());
 app.use(secureHeaders());
@@ -35,5 +36,19 @@ app.route("/api/chats", chats);
 app.get("/", (c) => {
 	return c.text("OK");
 });
+
+// OpenAPI spec — généré automatiquement par OpenAPIHono
+app.doc("/doc", {
+	openapi: "3.0.0",
+	info: {
+		title: "Collector API",
+		version: "1.0.0",
+		description:
+			"API du projet Collector — plateforme de vente d'objets de collection.",
+	},
+});
+
+// Scalar UI disponible sur /reference
+app.get("/reference", Scalar({ url: "/doc" }));
 
 export default app;
